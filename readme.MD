@@ -1,6 +1,5 @@
 # documentation
 
-
 `00 00 00 00` nop: increase pc by 1
 
 `00 00 00 01` hlt: stop program execution 
@@ -26,5 +25,22 @@
 
 `F0 00 00 01 00 00 BB AA` - cmp: A - B, set zero flag to 1 if zero, discard result
 
+# Example
 
+```
+ldr A 65
+ldr B 04
+ldr C 0
+ldr D 1
+label hi
+pnt A 
+sub B D 
+cmp B C 
+jnz hi 
+hlt 
+```
+
+would be translated to the bytecode 
+
+```00 00 00 02 00 00 00 01 00 00 00 41 00 00 00 02 00 00 00 02 00 00 00 04 00 00 00 02 00 00 00 03 00 00 00 00 00 00 00 02 00 00 00 04 00 00 00 01 30 00 00 01 00 00 00 01 10 00 00 02 00 02 04 02 F0 00 00 01 00 00 03 02 20 00 00 03 00 00 00 0C 00 00 00 01```
 
