@@ -11,7 +11,7 @@
 
 `10 00 00 02 00 CC BB AA` sub: reg A - reg B = store in reg cC
 
-`11 00 00 01 00 CC 00 AA XX XX XX XX` - add: adds constant and reg A and stores in reg C
+`11 00 00 01 00 CC 00 AA XX XX XX XX` - add: adds constant and reg A and stores in reg C NOT YET IMPLEMENTED
 
 
 
