@@ -20,7 +20,7 @@ fn main() {
     let instruction: u32;
     let params: [u32; 4];
 
-    init(space, "./testfile.bin".to_string());
+    init(space, "./fib.bin".to_string());
     //print_pgm(space);
     
     loop {
@@ -48,6 +48,7 @@ fn init(space: &mut BytecodeWorkspace, filepath: String){
 fn one_loop(space: &mut BytecodeWorkspace){
 
     if space.reg_pc  >= space.pgm_array.len() as u32 {
+        println!("{}", space.reg_pc);
         panic!("attempted to read end of file")
     }
     // if space.reg_pc < 0 {
@@ -63,7 +64,8 @@ fn one_loop(space: &mut BytecodeWorkspace){
 
         //hlt
         0x00_00_00_01 => {
-            println!("");
+            // println!("");
+            // println!("{}", space.reg_array[1]);
             exit(0);
         },
         //ldr
@@ -76,6 +78,16 @@ fn one_loop(space: &mut BytecodeWorkspace){
             space.reg_array[reg_a as usize] = temp2;
             space.reg_pc += 3;
         }
+        //mov
+        0x00_00_00_03 => {
+            let temp = space.pgm_array[space.reg_pc as usize + 1];
+            
+            let reg_a= temp as u8;
+            let reg_b= (temp >> 8) as u8;
+
+            space.reg_array[reg_b as usize] = space.reg_array[reg_a as usize];
+            space.reg_pc += 2;
+        }
         //================================= 0x10 ==================================
         //add
         0x10_00_00_01 => {
@@ -84,7 +96,7 @@ fn one_loop(space: &mut BytecodeWorkspace){
             let reg_a = temp as u8;
             let reg_b= (temp >> 8) as u8;
             let reg_c= (temp >> 16) as u8;
-
+            print_state(space);
             space.reg_array[reg_c as usize] = space.reg_array[reg_a as usize] + space.reg_array[reg_b as usize];
             space.reg_pc += 2
         },
@@ -95,9 +107,11 @@ fn one_loop(space: &mut BytecodeWorkspace){
             let reg_a = temp as u8;
             let reg_b= (temp >> 8) as u8;
             let reg_c= (temp >> 16) as u8;
-
+            println!("a:{} b:{} c:{}", reg_a,reg_b,reg_c);
+            println!("{}", space.reg_array[reg_c as usize]);
             space.reg_array[reg_c as usize] = space.reg_array[reg_a as usize] - space.reg_array[reg_b as usize];
-            space.reg_pc += 2
+            space.reg_pc += 2;
+            println!("{}\n", space.reg_array[reg_c as usize]);
         },
         //================================= 0x20 ==================================
         //jmp
@@ -147,7 +161,7 @@ fn one_loop(space: &mut BytecodeWorkspace){
             let reg_b = (temp >> 8) as u8;
 
             space.flag_zero = (space.reg_array[reg_a as usize] - space.reg_array[reg_b as usize]) == 0;
-           
+            // println!("{}", space.flag_zero);
             space.reg_pc += 2;
         }
 
@@ -178,4 +192,16 @@ fn print_pgm(space: &mut BytecodeWorkspace){
     for n in &space.pgm_array {
         print!("{}\n", n);
     }
+}
+
+fn print_state(space: &mut BytecodeWorkspace){
+    println!("a: {}", space.reg_array[1]);
+    println!("b: {}", space.reg_array[2]);
+    println!("c: {}", space.reg_array[3]);
+    println!("d: {}", space.reg_array[4]);
+    println!("e: {}", space.reg_array[5]);
+    println!("f: {}", space.reg_array[6]);
+    println!("g: {}", space.reg_array[7]);
+    println!("pc: {}", space.reg_pc);
+    println!("");
 }
