@@ -6,6 +6,7 @@ pub struct BytecodeWorkspace {
     pub pgm_array: Vec<u32>,
     pub reg_pc: u32,
     pub reg_sp: u32,
+    pub reg_lk: u32,
     pub flag_zero: bool,
    
 }
@@ -24,10 +25,11 @@ impl BytecodeWorkspace {
     }
 
     pub fn init(&mut self) {
-        self.reg_array = vec![0, 12];
+        self.reg_array = vec![0, 13];
         self.mem_array = vec![0, 1_000_000];
         self.reg_pc = 0;
         self.reg_sp = 0;
+        self.reg_lk = 0;
     }
 
     pub fn read_ram(&self, offset: u32)-> &u32{
