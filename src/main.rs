@@ -24,16 +24,16 @@ fn main() {
     let instruction: u32;
     let params: [u32; 4];
 
-    let mut start = Instant::now();
+    let start = Instant::now();
 
-    find_fib(48);
-    let duration = start.elapsed();
-    println!("Native Time elapsed is: {:?}", duration);
+    // find_fib(48);
+    // let duration = start.elapsed();
+    // println!("Native Time elapsed is: {:?}", duration);
     let args: Vec<String> = env::args().collect();
     init(space, args[1].to_string());
     //print_pgm(space);
 
-    start = Instant::now();
+    //start = Instant::now();
     loop {
         one_loop(space, start);
     }
@@ -103,23 +103,87 @@ fn one_loop(space: &mut BytecodeWorkspace, start: Instant){
         0x20_00_00_02 => {
             opcodes::jez(space);
         },
-            
         //jnz
         0x20_00_00_03 => {
             opcodes::jnz(space);
+        },
+
+        //blr
+        0x20_00_10_01 => {
+            opcodes::blr(space);
+        },
+        //bez
+        0x20_00_10_02 => {
+            opcodes::bez(space);
+        },
+            
+        //bnz
+        0x20_00_10_03 => {
+            opcodes::bnz(space);
+        },
+        //non reg jumps
+
+        //jpc
+        0x20_10_00_01 => {
+            opcodes::jmp(space);
+        },
+        //jec
+        0x20_10_00_02 => {
+            opcodes::jec(space);
         },
         //jnc
         0x20_10_00_03 => {
             opcodes::jnc(space);
         },
+
+        //blc
+        0x20_10_10_01 => {
+            opcodes::blc(space);
+        },
+        //bec
+        0x20_10_10_02 => {
+            opcodes::bec(space);
+        },
+            
+        //bnc
+        0x20_10_10_03 => {
+            opcodes::bnc(space);
+        },
+        //lrt
+        0x20_F0_00_01 => {
+            opcodes::lrt(space);
+        },
+
+
+
+
+
+        
+
+
+
+
+
             
         
 
         //================================= 0x30 ==================================
         //pnt
-        0x30_00_00_01 => {
+        0x30_00_00_02 => {
             opcodes::pnt(space);
-        },        
+        },   
+        //ptc
+        0x30_00_00_01 => {
+            opcodes::ptc(space);
+        }, 
+        //pth
+        0x30_00_00_03 => {
+            opcodes::pth(space);
+        }, 
+        
+
+
+
         //================================= 0xF0 ==================================
         //cmp
         0xF0_00_00_01 => {

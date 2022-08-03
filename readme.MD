@@ -69,12 +69,16 @@ jumps offset to the number of words
 
 `bnc: 20 10 10 03 AA AA AA AA` - jmp and link if zero flag not set to A
 
-
+`lrt: 20 F0 00 01 AA AA AA AA` - return to adr in link register
 
 ## 0x30 op codes
 
 
-`pnt: 30 00 00 01 00 00 00 AA` - print value in reg A as ascii value
+`ptc: 30 00 00 01 00 00 00 AA` - print value in reg A as ascii value
+
+`pnt: 30 00 00 02 AA AA AA AA` - print value A as dec number
+
+`pth: 30 00 00 03 AA AA AA AA` - print value A as hex number
 
 ## 0xF0 op codes
 

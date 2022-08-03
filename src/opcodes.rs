@@ -10,6 +10,7 @@ pub fn nop(space: &mut BytecodeWorkspace){
 }
 
 pub fn hlt(space: &mut BytecodeWorkspace){
+    println!("");
     exit(0);
 }
 
@@ -178,15 +179,40 @@ pub fn bnc(space: &mut BytecodeWorkspace){
 
 
 
+pub fn ptc(space: &mut BytecodeWorkspace){
+    let temp = space.pgm_array[space.reg_pc as usize + 1];
+            
+    let reg_a= temp as u8;
+
+    print!("{}", space.reg_array[reg_a as usize]as u8  as char);//as u8 as char
+    // print_state(space);
+    space.reg_pc += 2
+}
+
 pub fn pnt(space: &mut BytecodeWorkspace){
     let temp = space.pgm_array[space.reg_pc as usize + 1];
             
     let reg_a= temp as u8;
 
-    print!("{}\n", space.reg_array[reg_a as usize]  );//as u8 as char
+    print!("{}", space.reg_array[reg_a as usize]);//as u8 as char
     // print_state(space);
     space.reg_pc += 2
 }
+
+pub fn pth(space: &mut BytecodeWorkspace){
+    let temp = space.pgm_array[space.reg_pc as usize + 1];
+            
+    let reg_a= temp as u8;
+
+    print!("{:#10x}", space.reg_array[reg_a as usize]);
+    // print_state(space);
+    space.reg_pc += 2
+}
+
+
+
+
+
 
 
 pub fn cmp(space: &mut BytecodeWorkspace){
@@ -225,6 +251,10 @@ pub fn pop(space: &mut BytecodeWorkspace){
         }
     }
     space.reg_pc += 2;
+}
+
+pub fn lrt(space: &mut BytecodeWorkspace){
+    space.reg_pc = space.reg_lk;
 }
 
 
