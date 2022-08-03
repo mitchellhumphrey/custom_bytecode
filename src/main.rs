@@ -5,8 +5,8 @@ mod opcodes;
 mod structs;
 use crate::structs::BytecodeWorkspace;
 
-use std::time::{Instant};
-
+use std::time::Instant;
+use std::env;
 
 
 
@@ -29,8 +29,8 @@ fn main() {
     find_fib(48);
     let duration = start.elapsed();
     println!("Native Time elapsed is: {:?}", duration);
-
-    init(space, "./fib.bin".to_string());
+    let args: Vec<String> = env::args().collect();
+    init(space, args[1].to_string());
     //print_pgm(space);
 
     start = Instant::now();
@@ -108,6 +108,10 @@ fn one_loop(space: &mut BytecodeWorkspace, start: Instant){
         0x20_00_00_03 => {
             opcodes::jnz(space);
         },
+        //jnc
+        0x20_10_00_03 => {
+            opcodes::jnc(space);
+        },
             
         
 
@@ -115,18 +119,15 @@ fn one_loop(space: &mut BytecodeWorkspace, start: Instant){
         //pnt
         0x30_00_00_01 => {
             opcodes::pnt(space);
-        },
-        
-
-
-        
+        },        
         //================================= 0xF0 ==================================
         //cmp
         0xF0_00_00_01 => {
             opcodes::cmp(space);
         }
         _ => {
-            println!("{}", space.pgm_array[space.reg_pc as usize]);
+            println!("{:#08x}", space.pgm_array[space.reg_pc as usize]);
+            
             panic!("not an OP code")
         },
     }
